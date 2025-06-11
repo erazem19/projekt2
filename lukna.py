@@ -102,6 +102,7 @@ def on_mouse_drag(event):
     nariši_dots()
 
 def on_mouse_wheel(event):
+    # zoom 
     global zoom_factor, photo, image_id
     print (event.delta)
     direction = 1 if event.delta > 0 else -1
@@ -109,7 +110,7 @@ def on_mouse_wheel(event):
 
 
 
-    
+    # definiraj max in min zoom
     zoom_factor = max(1, min(zoom_factor, 3.0))
 
     new_width = int(img.width * zoom_factor)
@@ -124,7 +125,7 @@ def nariši_dots():
     global dots
     img_x, img_y = canvas.coords(image_id)
 
-    # Delete existing dots from canvas before drawing new ones
+    # Najprej zbiriši vse pike
     for dot in dots:
         if dot['red_id']:
             canvas.delete(dot['red_id'])
@@ -132,7 +133,7 @@ def nariši_dots():
             canvas.delete(dot['green_id'])
 
     for dot in dots:
-        # Calculate canvas coords from image relative coords and zoom
+        # izračunaj koordinate točk glede na zoom in premik
         red_canvas_x = dot['rel_x'] * zoom_factor + img_x
         red_canvas_y = dot['rel_y'] * zoom_factor + img_y
         green_canvas_x = dot['opp_rel_x'] * zoom_factor + img_x
@@ -156,11 +157,11 @@ def nariši_dots():
 
 root = tk.Tk()
 
-# Load image
+# naloudaj sliko    
 img = Image.open("map-world.jpg")
 photo = ImageTk.PhotoImage(img)
 
-# Create canvas and add image
+# naredi canvas pa daj gor sliko
 canvas = tk.Canvas(root, width=img.width, height=img.height)
 canvas.pack()
 image_id = canvas.create_image(0, 0, anchor="nw", image=photo)
